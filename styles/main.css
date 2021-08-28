@@ -35,6 +35,7 @@
   --primaryBlackColor: #9b0101;
   --secondaryColor: #ffffff;
   --opaqueBackground: #000000e6;
+  --mainCanvasBackground: #141414;
   --primaryTextSize: 15px;
   --primaryTextSizeS: 10px;
   --letterSpacing: 5px;
@@ -63,7 +64,7 @@ li {
 }
 li::before {
   content: "•";
-  color: red;
+  color: var(--primaryColor);
   display: inline-block; 
   width: 15px;
   margin-left: -1em;
@@ -133,7 +134,7 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #141414;
+  background-color: var(--mainCanvasBackground);
   z-index: 1;
   animation: loaderFinished 3s 3s forwards;
 }
@@ -153,7 +154,7 @@ canvas {
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: #141414;
+  background-color: var(--mainCanvasBackground);
   animation: loaderStarted 3s ease forwards;
 }
 
