@@ -1,0 +1,1 @@
+canvas-sketch main.js --open --html=index.html
