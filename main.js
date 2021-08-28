@@ -1,3 +1,19 @@
+//// Main site configuration. ////
+const configuration = {
+  SiteName: 'VICTOR',
+  NumberOfVerticalLines: 25,
+  NumberOfDots: 5000,
+  colors: {
+    CanvasBackgroundColor: '#141414',
+    LettersColor: '#FF0000',
+    LinesColors: ['#FFF', '#FF0000', '#7d7d7d'],
+    LowerLinesColors: ['#3d3d3d'],
+    DotsColor: '#7d7d7d'
+  }
+}
+///////////////////////////////
+
+
 // Import all needed dependencies.
 import * as THREE from './ext/three.module.min.js'
 import TWEEN from './ext/tween.js'
@@ -33,17 +49,17 @@ function init() {
   camera.position.z = 20
 
   scene = new THREE.Scene()
-  scene.background = new THREE.Color('#141414')
+  scene.background = new THREE.Color(configuration.colors.CanvasBackgroundColor)
   const near = 10
   const far = 150
-  scene.fog = new THREE.Fog('#141414', near, far)
+  scene.fog = new THREE.Fog(configuration.colors.CanvasBackgroundColor, near, far)
 
   // Load main letters and generate random lines.
   loadMainLetters()
-  for (let index = 0; index < 15; index++) {
-    generateRandomObject(1, [[0.2, 2, 4, 5], [0.1, 0.2]], ['#FFF', '#FF0000', '#7d7d7d'])
+  for (let index = 0; index < configuration.NumberOfVerticalLines; index++) {
+    generateRandomObject(1, [[0.2, 2, 4, 5], [0.1, 0.2]], configuration.colors.LinesColors)
     // Generate few random objects per page.
-    generateRandomObject(-windowHeightInRadians * index / 3, [[2, 4], [0.05]], ['#3d3d3d'])
+    generateRandomObject(-windowHeightInRadians * index / 3, [[2, 4], [0.05]], configuration.colors.LowerLinesColors)
   }
 
   renderer = new THREE.WebGLRenderer()
@@ -103,12 +119,13 @@ function generateRandomObject (verticalPosition, availableSizes, availableColors
 function loadMainLetters () {
   const fontLoader = new THREE.FontLoader()
   fontLoader.load('resources/fonts/Roboto-Black-3d.json', font => {
-    let textGeometry = new THREE.TextGeometry('VICTOR', { font: font, size: 5, height: 3, curveSegments: 3 })
+    let textGeometry = new THREE.TextGeometry(configuration.SiteName, { font: font, size: 5, height: 3, curveSegments: 3 })
     textGeometry.center()
 
     const textMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        time: { value: 0}
+        time: { value: 0 },
+        color: { type: 'vec3', value: new THREE.Color( configuration.colors.LettersColor ) }
       },
       vertexShader: vertexShader(),
       fragmentShader: fragmentShader(),
@@ -120,7 +137,7 @@ function loadMainLetters () {
 
     let vertices = []
   
-    for (let i = 0; i < 5000; i ++) {
+    for (let i = 0; i < configuration.NumberOfDots; i ++) {
       let x = Math.random() * 200 - 100
       let y = Math.random() * 200 - 100
       let z = Math.random() * 200 - 100
@@ -131,7 +148,7 @@ function loadMainLetters () {
     const bufferGeometry = new THREE.BufferGeometry()
     bufferGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
     const pointSprite = new THREE.TextureLoader().load('resources/images/icons/pointImg.png')
-    const pointsMaterial = new THREE.PointsMaterial({color: '#7d7d7d', size: 0.5, map: pointSprite, transparent: true, alphaTest: 0.5})
+    const pointsMaterial = new THREE.PointsMaterial({color: configuration.colors.DotsColor, size: 0.5, map: pointSprite, transparent: true, alphaTest: 0.5})
     const points = new THREE.Points(bufferGeometry, pointsMaterial)
     scene.add(points)
 
@@ -251,8 +268,9 @@ function vertexShader () {
 
 function fragmentShader () {
   return `
+  uniform vec3 color;
   void main() {
-    gl_FragColor = vec4(1.0, 0.2, 0.2, 1.0 );
+    gl_FragColor = vec4(color, 1.0 );
   }
   `
 }
