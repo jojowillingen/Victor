@@ -92,12 +92,6 @@ canvas {
   overflow: hidden;
 }
 
-.container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
 .text-indent {
   border-left: 3px solid var(--primaryBoldColor);
   padding-left: 20px;
@@ -135,7 +129,7 @@ canvas {
   width: 100%;
   height: 100%;
   background-color: var(--mainCanvasBackground);
-  z-index: 1;
+  z-index: 2;
   animation: loaderFinished 3s 3s forwards;
 }
 
@@ -243,7 +237,7 @@ canvas {
   justify-content: center;
   align-items: center;
   background: var(--opaqueBackground);
-  z-index: 1;
+  z-index: 2;
 }
 .popup--active {
   display: flex;
@@ -327,25 +321,15 @@ iframe {
 /** POPUP SUBSECTIONS END **/
 
 /***** FIXED CONTENT SECTIONS *****/
-
-.fixed-content {
-  width: 100%;
-  height: 100%;
-  padding: 5%;
+.fixed-content-header {
   position: fixed;
   top: 0;
-  left: 0;
-  opacity: 1;
-  transition: 700ms 3s ease;
-}
-
-.fixed-content-header {
-  position: absolute;
-  top: 0;
   width: 100%;
+  padding: 5% 5% 0 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
 }
 
 .fixed-content-header__contact {
@@ -365,11 +349,12 @@ iframe {
 }
 
 .fixed-content-paging {
-  position: absolute;
+  position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  right: 0;
+  right: 5%;
   width: 50px;
+  z-index: 1;
 }
 
 .fixed-content-paging:hover .paging__page {
@@ -402,12 +387,14 @@ iframe {
 }
 
 .fixed-content-footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
+  padding: 0 5% 5% 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
 }
 
 .social-links__anchor {
@@ -850,7 +837,7 @@ iframe {
   }
 }
 
-@media only screen and (max-width: 769px) {
+@media only screen and (max-width: 1000px) {
   .content {
     width: 90%;
   }
@@ -880,7 +867,6 @@ iframe {
   .content-section__text {
     font-size: 16px;
     width: 100%;
-    text-align: justify;
   }
 
   .content-services {
@@ -944,5 +930,22 @@ iframe {
   }
   .content-section__buttons-holder .content-section__button:first-of-type:hover .button__text {
     display: block;
+  }
+}
+
+/* Minimum device height; */
+@media only screen and (max-height: 450px) {
+  .content-services,
+  .content-section__images,
+  .content-portfolio__images {
+    display: none;
+  }
+
+  .content-holder--left-align {
+    flex-basis: 100%;
+  }
+
+  .content-section__text-team {
+    margin-bottom: 17px;
   }
 }
