@@ -67,7 +67,7 @@ export default class UI {
     })
   }
 
-  showPopup = (popupType, createCallback, destroyCallback) => {
+  showPopup (popupType, createCallback, destroyCallback) {
     if (typeof createCallback === 'function') createCallback() 
     popup = uiWrapper.querySelector(`[data-popup=${popupType}]`)
     popup.classList.add('popup--active')
@@ -82,7 +82,7 @@ export default class UI {
     }, 0)
   }
 
-  hidePopup = (event) => {
+  hidePopup (event) {
     if (event.target !== event.currentTarget) return
     popup.classList.remove('popup--active')
     popup.classList.remove('popup--animated')
