@@ -36,8 +36,11 @@ export default class UI {
     footerYear.innerHTML = `© ${new Date().getFullYear()}`
   }
 
-  ui_moveEvent (e) {
+  ui_moveEvent (e, Use2DTextOver3D) {
     this.buttonMoveAnimation(e)
+    if (Use2DTextOver3D) {
+      this.mainLetters2DAnimation(e)
+    }
   }
 
   buttonMoveAnimation (e) {
@@ -65,6 +68,16 @@ export default class UI {
         element.style.transition = 'transform 500ms ease'
       }
     })
+  }
+
+  mainLetters2DAnimation (e) {
+    const letters = document.querySelector('.configuration__letters')
+    
+    const xCenter = window.innerWidth / 2
+    const yCenter = window.innerHeight / 2
+    const LettersXPosition = xCenter - e.clientX
+    const LettersYPosition = yCenter - e.clientY
+    letters.style.transform = `rotateX(${-LettersXPosition / 50}deg) rotateY(${LettersYPosition / 50}deg) translateX(-50%)`
   }
 
   showPopup (popupType, createCallback, destroyCallback) {

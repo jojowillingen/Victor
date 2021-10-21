@@ -1,6 +1,8 @@
 //// Main site configuration. ////
 const configuration = {
   SiteName: 'VICTOR',
+  Use2DTextOver3D: false, // Change to true if you want 2D over 3D
+  SiteNameSize: 0.7, // Between 0 and +
   NumberOfVerticalLines: 25,
   NumberOfDots: 5000,
   colors: {
@@ -55,7 +57,11 @@ function init() {
   scene.fog = new THREE.Fog(configuration.colors.CanvasBackgroundColor, near, far)
 
   // Load main letters and generate random lines.
-  loadMainLetters()
+  if (!configuration.Use2DTextOver3D) {
+    loadMainLetters()
+  } else {
+    loadMain2DLetters()
+  }
   for (let index = 0; index < configuration.NumberOfVerticalLines; index++) {
     generateRandomObject(1, [[0.2, 2, 4, 5], [0.1, 0.2]], configuration.colors.LinesColors)
     // Generate few random objects per page.
@@ -121,6 +127,8 @@ function loadMainLetters () {
   fontLoader.load('resources/fonts/Roboto-Black-3d.json', font => {
     let textGeometry = new THREE.TextGeometry(configuration.SiteName, { font: font, size: 5, height: 3, curveSegments: 3 })
     textGeometry.center()
+
+    textGeometry.scale(configuration.SiteNameSize, configuration.SiteNameSize, configuration.SiteNameSize)
 
     const textMaterial = new THREE.ShaderMaterial({
       uniforms: {
@@ -275,6 +283,11 @@ function fragmentShader () {
   `
 }
 
+function loadMain2DLetters () {
+  const configurationLetters = document.querySelector('.configuration__letters')
+  configurationLetters.classList.remove('configuration__letters--hidden')
+}
+
 function isMobile () {
   try {
     document.createEvent('touchEvent')
@@ -344,7 +357,7 @@ function windowWheelOrTouch (e) {
 }
 
 function mouseMove (e) {
-  ui.ui_moveEvent(e)
+  ui.ui_moveEvent(e, configuration.Use2DTextOver3D)
   if (sceneMovedAmmount > 0) return
 
   const xCenter = window.innerWidth / 2
